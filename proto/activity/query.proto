@@ -1,0 +1,15 @@
+syntax = "proto3";
+package activity;
+
+import "google/api/annotations.proto";
+import "activity/activity.proto";
+
+option go_package = "phoenix-api/types/activvity";
+
+service ActivityQuery {
+
+  // NftsPopular queries list popular activity
+  rpc ActivityAtNft(ActivityAtNftRequest) returns (ActivityAtNftResponse) {
+    option (google.api.http).get = "/nft/{nft_id}/activity";
+  }
+}

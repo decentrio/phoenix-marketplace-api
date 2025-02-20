@@ -1,0 +1,20 @@
+syntax = "proto3";
+package activity;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "phoenix-api/types/activvity";
+
+message Activity {
+  string type = 1;
+  string timestamp = 2;
+  google.protobuf.Struct detail = 3;
+}
+
+message ActivityAtNftRequest {
+  string nft_id = 1;
+}
+
+message ActivityAtNftResponse {
+  repeated Activity data = 1;
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+package nft;
+
+import "google/api/annotations.proto";
+import "nft/nft.proto";
+
+option go_package = "phoenix-api/types/nft";
+
+service NftQuery {
+  // NftAtAccount queries list nfts at the given account_id
+  rpc NftsAtAccount(NftsAtAccountRequest) returns (NftsAtAccountResponse) {
+    option (google.api.http).get = "/account/{account_id}/nfts";
+  }
+
+  // NftsAvailable queries list available nfts
+  rpc NftsAvailable(NftsAvailableRequest) returns (NftsAvailableResponse) {
+    option (google.api.http).get = "/marketplace/nfts";
+  }
+
+  // NftsPopular queries list popular nfts
+  rpc NftsPopular(NftsPopularRequest) returns (NftsPopularResponse) {
+    option (google.api.http).get = "/marketplace/popular/nfts";
+  }
+
+  // PriceHistory queries list price of nft
+  rpc PriceHistory(PriceHistoryRequest) returns (PriceHistoryResponse) {
+    option (google.api.http).get = "/nft/{nft_id}/price-history";
+  }
+}

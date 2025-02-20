@@ -1,0 +1,19 @@
+syntax = "proto3";
+package auction;
+
+option go_package = "phoenix-api/types/auction";
+
+message Auction {
+  string auction_id = 1;
+  string nft_id = 2;
+  string collection = 3;
+  string current_bid = 4;
+  string end_time = 5;
+}
+
+message AuctionsAvailableRequest {
+}
+
+message AuctionsAvailableResponse {
+  repeated Auction data = 1;
+}

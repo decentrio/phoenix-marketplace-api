@@ -1,0 +1,14 @@
+syntax = "proto3";
+package offer;
+
+import "google/api/annotations.proto";
+import "offer/offer.proto";
+
+option go_package = "phoenix-api/types/offer";
+
+service OfferQuery {
+  // NftAtAccount queries list nfts at the given offers
+  rpc OffersAtNft(OffersAtNftRequest) returns (OffersAtNftResponse) {
+    option (google.api.http).get = "/nft/{nft_id}/offers";
+  }
+}
