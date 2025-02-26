@@ -6,11 +6,10 @@ import "google/protobuf/struct.proto";
 option go_package = "phoenix-api/types/nft";
 
 message Nft {
-  string nft_id = 1;
+  string id = 1;
   string name = 2;
   string collection = 3;
-  string owner = 4;
-  google.protobuf.Struct metadata = 5;
+  google.protobuf.Struct metadata = 4;
 }
 
 message NftAvailable {
@@ -35,7 +34,7 @@ message PriceHistory {
 message NftsAtAccountRequest { string account_id = 1; }
 
 message NftsAtAccountResponse {
-  repeated Nft data = 1;
+  repeated Nft nfts = 1;
 }
 
 message NftsAvailableRequest {
