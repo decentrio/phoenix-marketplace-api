@@ -4,16 +4,29 @@ package auction;
 option go_package = "phoenix-api/types/auction";
 
 message Auction {
+  uint64 id = 1;
+  string seller = 2;
+  uint64 highest_bid = 3;
+  uint64 end_time = 4;
+  string status = 5;
+  string auction_token = 6;
+  string nid = 7;
+  uint64 api = 8;
+  uint64 minimum_price = 9;
+  uint64 buy_now_price = 10;
+}
+
+message AuctionInfo {
   string auction_id = 1;
   string nft_id = 2;
   string collection = 3;
-  string current_bid = 4;
-  string end_time = 5;
+  float current_bid = 4;
+  uint64 end_time = 5;
 }
 
 message AuctionsAvailableRequest {
 }
 
 message AuctionsAvailableResponse {
-  repeated Auction data = 1;
+  repeated AuctionInfo auctions = 1;
 }

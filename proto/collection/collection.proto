@@ -6,38 +6,35 @@ option go_package = "phoenix-api/types/collection";
 message Collection {
   string address = 1;
   string name = 2;
-  string id = 3;
-  string description = 4;
-  int32 total_item = 5;
-  string trade_volume = 6;
+  string symbol = 3;
+  string uri = 4;
+  uint32 total_items = 5;
 }
 
 message CollectionAvailable {
-  string address = 1;
+  string id = 1;
   string name = 2;
-  string id = 3;
-  int32 total_item = 4;
-  string description = 5;
+  uint32 total_items = 3;
+  string description = 4;
 }
 
 message CollectionPopular {
-  string address = 1;
+  string id = 1;
   string name = 2;
-  string id = 3;
-  int32 total_item = 4;
-  string trade_volume = 5;
+  float trade_volume = 3;
+  uint32 total_items = 4;
 }
 
 message CollectionsAvailableRequest {
 }
 
 message CollectionsAvailableResponse {
-  repeated CollectionAvailable data = 1;
+  repeated CollectionAvailable collections = 1;
 }
 
 message CollectionsPopularRequest {
 }
 
 message CollectionsPopularResponse {
-  repeated CollectionPopular data = 1;
+  repeated CollectionPopular collections = 1;
 }

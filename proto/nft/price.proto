@@ -1,0 +1,45 @@
+syntax = "proto3";
+package nft;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "phoenix-api/types/nft";
+
+message PriceHistory {
+  string hash = 1;
+  string nid = 2;
+  uint64 price = 3;
+  string token = 4;
+  uint64 tx_time = 5;
+}
+
+message PriceHistoryInfo {
+  uint64 timestamp = 1;
+  float price = 2;
+}
+
+
+message PriceHistoryRequest {
+  string nft_id = 1;
+}
+
+message PriceHistoryResponse {
+  repeated PriceHistoryInfo price_history = 1;
+}
+
+message Volume {
+  string hash = 1;
+  string nid = 2;
+  string collection = 3;
+  uint64 amount = 4;
+  uint64 volume = 5;
+  string token = 6;
+}  
+
+message Bid {
+  string hash = 1;
+  string auction_id = 2;
+  string bidder = 3;
+  uint64 bid_amount = 4;
+}  
+

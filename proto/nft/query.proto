@@ -3,6 +3,7 @@ package nft;
 
 import "google/api/annotations.proto";
 import "nft/nft.proto";
+import "nft/price.proto";
 
 option go_package = "phoenix-api/types/nft";
 

@@ -10,8 +10,8 @@ message Offer {
 
 }
 
-message OffersAtNftRequest { string nft_id = 1; }
+message OffersAtNftRequest { string collection_address = 1; string nft_id = 2; }
 
 message OffersAtNftResponse {
-  repeated Offer data = 1;
+  repeated Offer offers = 1;
 }

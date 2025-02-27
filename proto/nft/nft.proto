@@ -9,52 +9,46 @@ message Nft {
   string id = 1;
   string name = 2;
   string collection = 3;
-  google.protobuf.Struct metadata = 4;
-}
+  string uri = 4;
+}  
 
-message NftAvailable {
-  string nft_id = 1;
+message NftAtAccount {
+  string id = 1;
   string name = 2;
   string collection = 3;
-  string price = 4; 
+  google.protobuf.Struct metadata = 4;
+}  
+
+message NftAvailable {
+  string id = 1;
+  string name = 2;
+  string collection = 3;
+  float price = 4; 
 }
 
 message NftPopular {
-  string nft_id = 1;
+  string id = 1;
   string name = 2;
   string collection = 3;
-  string trade_volume = 4; 
-}
-
-message PriceHistory {
-  string timestamp = 1;
-  float price = 2;
+  float trade_volume = 4; 
 }
 
 message NftsAtAccountRequest { string account_id = 1; }
 
 message NftsAtAccountResponse {
-  repeated Nft nfts = 1;
+  repeated NftAtAccount nfts = 1;
 }
 
 message NftsAvailableRequest {
 }
 
 message NftsAvailableResponse {
-  repeated NftAvailable data = 1;
+  repeated NftAvailable nfts = 1;
 }
 
 message NftsPopularRequest {
 }
 
 message NftsPopularResponse {
-  repeated NftPopular data = 1;
-}
-
-message PriceHistoryRequest {
-  string nft_id = 1;
-}
-
-message PriceHistoryResponse {
-  repeated PriceHistory data = 1;
+  repeated NftPopular nfts = 1;
 }
