@@ -2,14 +2,14 @@ package auction
 
 import (
 	"context"
-	"fmt"
 
-	app "phoenix-api/app"
-	types "phoenix-api/types/auction"
+	app "phoenix-marketplace-api/app"
+	dbtypes "phoenix-marketplace-api/database"
+	types "phoenix-marketplace-api/types/auction"
 )
 
 func (k Keeper) AuctionsAvailable(ctx context.Context, request *types.AuctionsAvailableRequest) (*types.AuctionsAvailableResponse, error) {
-	var auctions []*types.Auction
+	var auctions []*dbtypes.Auction
 	var auctionInfos []*types.AuctionInfo
 
 	query := k.dbHandler.Table(app.AUCTION_TABLE).
@@ -26,7 +26,7 @@ func (k Keeper) AuctionsAvailable(ctx context.Context, request *types.AuctionsAv
 			Select("collection").
 			Where("nid = ?", auction.Nid).First(&collection).Error; err == nil {
 			auctionInfos = append(auctionInfos, &types.AuctionInfo{
-				AuctionId:  fmt.Sprintf("%d", auction.Id),
+				AuctionId:  string(auction.ID),
 				NftId:      auction.Nid,
 				Collection: collection,
 				CurrentBid: float32(auction.HighestBid),

@@ -3,7 +3,7 @@ package nft;
 
 import "google/protobuf/struct.proto";
 
-option go_package = "phoenix-api/types/nft";
+option go_package = "phoenix-marketplace-api/types/nft";
 
 message PriceHistory {
   string hash = 1;
@@ -18,14 +18,9 @@ message PriceHistoryInfo {
   float price = 2;
 }
 
+message PriceHistoryRequest { string nft_id = 1; }
 
-message PriceHistoryRequest {
-  string nft_id = 1;
-}
-
-message PriceHistoryResponse {
-  repeated PriceHistoryInfo price_history = 1;
-}
+message PriceHistoryResponse { repeated PriceHistoryInfo price_history = 1; }
 
 message Volume {
   string hash = 1;
@@ -34,12 +29,11 @@ message Volume {
   uint64 amount = 4;
   uint64 volume = 5;
   string token = 6;
-}  
+}
 
 message Bid {
   string hash = 1;
   string auction_id = 2;
   string bidder = 3;
   uint64 bid_amount = 4;
-}  
-
+}

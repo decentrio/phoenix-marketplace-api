@@ -62,9 +62,10 @@ type Bid struct {
 
 // collection: mint, mint_batch, burn, burn_batch, safe_transfer_from, safe_batch_transfer_from, auction: create_auction, finalize_auction, buy_now
 type Activity struct {
-	Nid     string `json:"nid,omitempty"`
-	Type    string `json:"type,omitempty"`
-	Details byte `gorm:"type:jsonb" json:"details,omitempty"`
+	Nid       string `json:"nid,omitempty"`
+	Timestamp uint64 `json:"timestamp,omitempty"`
+	Type      string `json:"type,omitempty"`
+	Details   string `gorm:"type:jsonb" json:"details,omitempty"`
 }
 
 // auction: finalize_auction, buy_now

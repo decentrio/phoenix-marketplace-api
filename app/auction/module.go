@@ -1,7 +1,8 @@
 package auction
 
 import (
-	types "phoenix-api/types/auction"
+	types "phoenix-marketplace-api/types/auction"
+
 	"google.golang.org/grpc"
 )
 

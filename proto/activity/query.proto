@@ -4,7 +4,7 @@ package activity;
 import "google/api/annotations.proto";
 import "activity/activity.proto";
 
-option go_package = "phoenix-api/types/activvity";
+option go_package = "phoenix-marketplace-api/types/activvity";
 
 service ActivityQuery {
 

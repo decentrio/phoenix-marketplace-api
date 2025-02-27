@@ -13,7 +13,7 @@ for dir in $proto_dirs; do
   proto_files=$(find "${dir}" -maxdepth 1 -name '*.proto')
   for file in $proto_files; do
     # Check if the go_package in the file is pointing to realionetwork
-    if grep -q "option go_package.*phoenix-api" "$file"; then
+    if grep -q "option go_package.*phoenix-marketplace-api" "$file"; then
       buf generate --template proto/buf.gen.yaml "$file"
     fi
   done

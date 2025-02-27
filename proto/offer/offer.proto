@@ -1,17 +1,17 @@
 syntax = "proto3";
 package offer;
 
-option go_package = "phoenix-api/types/offer";
+option go_package = "phoenix-marketplace-api/types/offer";
 
 message Offer {
   string offer_id = 1;
   float price = 2;
   string bidder = 3;
-
 }
 
-message OffersAtNftRequest { string collection_address = 1; string nft_id = 2; }
-
-message OffersAtNftResponse {
-  repeated Offer offers = 1;
+message OffersAtNftRequest {
+  string collection_address = 1;
+  string nft_id = 2;
 }
+
+message OffersAtNftResponse { repeated Offer offers = 1; }

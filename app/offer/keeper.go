@@ -3,7 +3,7 @@ package offer
 import (
 	"gorm.io/gorm"
 
-	types "phoenix-api/types/offer"
+	types "phoenix-marketplace-api/types/offer"
 )
 
 type Keeper struct {
@@ -18,4 +18,3 @@ func NewKeeper(db *gorm.DB) *Keeper {
 }
 
 var _ types.OfferQueryServer = Keeper{}
-

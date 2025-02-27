@@ -3,7 +3,7 @@ package nft
 import (
 	"gorm.io/gorm"
 
-	types "phoenix-api/types/nft"
+	types "phoenix-marketplace-api/types/nft"
 )
 
 type Keeper struct {
@@ -18,4 +18,3 @@ func NewKeeper(db *gorm.DB) *Keeper {
 }
 
 var _ types.NftQueryServer = Keeper{}
-

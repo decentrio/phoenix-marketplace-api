@@ -3,52 +3,44 @@ package nft;
 
 import "google/protobuf/struct.proto";
 
-option go_package = "phoenix-api/types/nft";
+option go_package = "phoenix-marketplace-api/types/nft";
 
 message Nft {
   string id = 1;
   string name = 2;
   string collection = 3;
   string uri = 4;
-}  
+}
 
 message NftAtAccount {
   string id = 1;
   string name = 2;
   string collection = 3;
   google.protobuf.Struct metadata = 4;
-}  
+}
 
 message NftAvailable {
   string id = 1;
   string name = 2;
   string collection = 3;
-  float price = 4; 
+  float price = 4;
 }
 
 message NftPopular {
   string id = 1;
   string name = 2;
   string collection = 3;
-  float trade_volume = 4; 
+  float trade_volume = 4;
 }
 
 message NftsAtAccountRequest { string account_id = 1; }
 
-message NftsAtAccountResponse {
-  repeated NftAtAccount nfts = 1;
-}
+message NftsAtAccountResponse { repeated NftAtAccount nfts = 1; }
 
-message NftsAvailableRequest {
-}
+message NftsAvailableRequest {}
 
-message NftsAvailableResponse {
-  repeated NftAvailable nfts = 1;
-}
+message NftsAvailableResponse { repeated NftAvailable nfts = 1; }
 
-message NftsPopularRequest {
-}
+message NftsPopularRequest {}
 
-message NftsPopularResponse {
-  repeated NftPopular nfts = 1;
-}
+message NftsPopularResponse { repeated NftPopular nfts = 1; }

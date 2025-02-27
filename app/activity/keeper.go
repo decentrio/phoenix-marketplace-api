@@ -3,7 +3,7 @@ package activity
 import (
 	"gorm.io/gorm"
 
-	types "phoenix-api/types/activity"
+	types "phoenix-marketplace-api/types/activity"
 )
 
 type Keeper struct {
@@ -18,4 +18,3 @@ func NewKeeper(db *gorm.DB) *Keeper {
 }
 
 var _ types.ActivityQueryServer = Keeper{}
-

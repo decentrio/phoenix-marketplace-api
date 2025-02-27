@@ -1,7 +1,8 @@
 package offer
 
 import (
-	types "phoenix-api/types/offer"
+	types "phoenix-marketplace-api/types/offer"
+
 	"google.golang.org/grpc"
 )
 

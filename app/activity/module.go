@@ -1,7 +1,8 @@
 package activity
 
 import (
-	types "phoenix-api/types/activity"
+	types "phoenix-marketplace-api/types/activity"
+
 	"google.golang.org/grpc"
 )
 

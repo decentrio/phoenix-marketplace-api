@@ -4,12 +4,13 @@ package auction;
 import "google/api/annotations.proto";
 import "auction/auction.proto";
 
-option go_package = "phoenix-api/types/auction";
+option go_package = "phoenix-marketplace-api/types/auction";
 
 service AuctionQuery {
 
   // NftsAvailable queries list available Auctions
-  rpc AuctionsAvailable(AuctionsAvailableRequest) returns (AuctionsAvailableResponse) {
+  rpc AuctionsAvailable(AuctionsAvailableRequest)
+      returns (AuctionsAvailableResponse) {
     option (google.api.http).get = "/marketplace/auctions/active";
   }
 }

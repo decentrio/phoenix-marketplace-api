@@ -1,7 +1,7 @@
 syntax = "proto3";
 package auction;
 
-option go_package = "phoenix-api/types/auction";
+option go_package = "phoenix-marketplace-api/types/auction";
 
 message Auction {
   uint64 id = 1;
@@ -24,9 +24,6 @@ message AuctionInfo {
   uint64 end_time = 5;
 }
 
-message AuctionsAvailableRequest {
-}
+message AuctionsAvailableRequest {}
 
-message AuctionsAvailableResponse {
-  repeated AuctionInfo auctions = 1;
-}
+message AuctionsAvailableResponse { repeated AuctionInfo auctions = 1; }

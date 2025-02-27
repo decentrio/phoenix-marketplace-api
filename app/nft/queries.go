@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 
-	app "phoenix-api/app"
-	types "phoenix-api/types/nft"
+	app "phoenix-marketplace-api/app"
+	dbtypes "phoenix-marketplace-api/database"
+	types "phoenix-marketplace-api/types/nft"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountRequest) (*types.NftsAtAccountResponse, error) {
-	var data []*types.NftAtAccount
+	var data []*dbtypes.NFT
 	var nftIds []string
 
 	err := k.dbHandler.Table(app.BALANCE_TABLE).
@@ -36,7 +37,7 @@ func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountR
 				Id:         nft.Id,
 				Name:       nft.Name,
 				Collection: nft.Collection,
-				Metadata:   metadata,
+				Metadata:   nft.Uri,
 			})
 		}
 	}

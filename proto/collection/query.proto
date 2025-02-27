@@ -4,16 +4,18 @@ package collection;
 import "google/api/annotations.proto";
 import "collection/collection.proto";
 
-option go_package = "phoenix-api/types/collection";
+option go_package = "phoenix-marketplace-api/types/collection";
 
 service CollectionQuery {
   // CollectionsAvailable queries list available Collections
-  rpc CollectionsAvailable(CollectionsAvailableRequest) returns (CollectionsAvailableResponse) {
+  rpc CollectionsAvailable(CollectionsAvailableRequest)
+      returns (CollectionsAvailableResponse) {
     option (google.api.http).get = "/marketplace/collections";
   }
 
   // NftsPopular queries list popular Collections
-  rpc CollectionsPopular(CollectionsPopularRequest) returns (CollectionsPopularResponse) {
+  rpc CollectionsPopular(CollectionsPopularRequest)
+      returns (CollectionsPopularResponse) {
     option (google.api.http).get = "/marketplace/popular/collections";
   }
 }

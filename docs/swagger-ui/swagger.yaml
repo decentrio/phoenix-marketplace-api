@@ -1,0 +1,711 @@
+swagger: '2.0'
+info:
+  title: Phoenix price API - gRPC Gateway docs
+  description: A REST interface for price and trade queries
+  version: 1.0.0
+paths:
+  /nft/{nftId}/activity:
+    get:
+      summary: NftsPopular queries list popular activity
+      operationId: ActivityAtNft
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activity:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    timestamp:
+                      type: string
+                    details:
+                      type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: nftId
+          in: path
+          required: true
+          type: string
+        - name: collectionAddress
+          in: query
+          required: false
+          type: string
+      tags:
+        - ActivityQuery
+  /marketplace/auctions/active:
+    get:
+      summary: NftsAvailable queries list available Auctions
+      operationId: AuctionsAvailable
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              auctions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    auctionId:
+                      type: string
+                    nftId:
+                      type: string
+                    collection:
+                      type: string
+                    currentBid:
+                      type: number
+                      format: float
+                    endTime:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - AuctionQuery
+  /marketplace/collections:
+    get:
+      summary: CollectionsAvailable queries list available Collections
+      operationId: CollectionsAvailable
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              collections:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    totalItems:
+                      type: integer
+                      format: int64
+                    description:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - CollectionQuery
+  /marketplace/popular/collections:
+    get:
+      summary: NftsPopular queries list popular Collections
+      operationId: CollectionsPopular
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              collections:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    tradeVolume:
+                      type: number
+                      format: float
+                    totalItems:
+                      type: integer
+                      format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - CollectionQuery
+  /account/{accountId}/nfts:
+    get:
+      summary: NftAtAccount queries list nfts at the given account_id
+      operationId: NftsAtAccount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nfts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    collection:
+                      type: string
+                    metadata:
+                      type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: string
+      tags:
+        - NftQuery
+  /marketplace/nfts:
+    get:
+      summary: NftsAvailable queries list available nfts
+      operationId: NftsAvailable
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nfts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    collection:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - NftQuery
+  /marketplace/popular/nfts:
+    get:
+      summary: NftsPopular queries list popular nfts
+      operationId: NftsPopular
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nfts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    collection:
+                      type: string
+                    tradeVolume:
+                      type: number
+                      format: float
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - NftQuery
+  /nft/{nftId}/price-history:
+    get:
+      summary: PriceHistory queries list price of nft
+      operationId: PriceHistory
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              priceHistory:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    timestamp:
+                      type: string
+                      format: uint64
+                    price:
+                      type: number
+                      format: float
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: nftId
+          in: path
+          required: true
+          type: string
+      tags:
+        - NftQuery
+  /nft/{nftId}/offers:
+    get:
+      summary: NftAtAccount queries list nfts at the given offers
+      operationId: OffersAtNft
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              offers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    offerId:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+                    bidder:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: nftId
+          in: path
+          required: true
+          type: string
+        - name: collectionAddress
+          in: query
+          required: false
+          type: string
+      tags:
+        - OfferQuery
+definitions:
+  activityActivityAtNftResponse:
+    type: object
+    properties:
+      activity:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+            timestamp:
+              type: string
+            details:
+              type: object
+  activityActivityInfo:
+    type: object
+    properties:
+      type:
+        type: string
+      timestamp:
+        type: string
+      details:
+        type: object
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  protobufNullValue:
+    type: string
+    enum:
+      - NULL_VALUE
+    default: NULL_VALUE
+    description: |-
+      `NullValue` is a singleton enumeration to represent the null value for the
+      `Value` type union.
+
+      The JSON representation for `NullValue` is JSON `null`.
+
+       - NULL_VALUE: Null value.
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  auctionAuctionInfo:
+    type: object
+    properties:
+      auctionId:
+        type: string
+      nftId:
+        type: string
+      collection:
+        type: string
+      currentBid:
+        type: number
+        format: float
+      endTime:
+        type: string
+        format: uint64
+  auctionAuctionsAvailableResponse:
+    type: object
+    properties:
+      auctions:
+        type: array
+        items:
+          type: object
+          properties:
+            auctionId:
+              type: string
+            nftId:
+              type: string
+            collection:
+              type: string
+            currentBid:
+              type: number
+              format: float
+            endTime:
+              type: string
+              format: uint64
+  collectionCollectionAvailable:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      totalItems:
+        type: integer
+        format: int64
+      description:
+        type: string
+  collectionCollectionPopular:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tradeVolume:
+        type: number
+        format: float
+      totalItems:
+        type: integer
+        format: int64
+  collectionCollectionsAvailableResponse:
+    type: object
+    properties:
+      collections:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            totalItems:
+              type: integer
+              format: int64
+            description:
+              type: string
+  collectionCollectionsPopularResponse:
+    type: object
+    properties:
+      collections:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            tradeVolume:
+              type: number
+              format: float
+            totalItems:
+              type: integer
+              format: int64
+  nftNftAtAccount:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      collection:
+        type: string
+      metadata:
+        type: object
+  nftNftAvailable:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      collection:
+        type: string
+      price:
+        type: number
+        format: float
+  nftNftPopular:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      collection:
+        type: string
+      tradeVolume:
+        type: number
+        format: float
+  nftNftsAtAccountResponse:
+    type: object
+    properties:
+      nfts:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            collection:
+              type: string
+            metadata:
+              type: object
+  nftNftsAvailableResponse:
+    type: object
+    properties:
+      nfts:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            collection:
+              type: string
+            price:
+              type: number
+              format: float
+  nftNftsPopularResponse:
+    type: object
+    properties:
+      nfts:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            collection:
+              type: string
+            tradeVolume:
+              type: number
+              format: float
+  nftPriceHistoryInfo:
+    type: object
+    properties:
+      timestamp:
+        type: string
+        format: uint64
+      price:
+        type: number
+        format: float
+  nftPriceHistoryResponse:
+    type: object
+    properties:
+      priceHistory:
+        type: array
+        items:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: uint64
+            price:
+              type: number
+              format: float
+  offerOffer:
+    type: object
+    properties:
+      offerId:
+        type: string
+      price:
+        type: number
+        format: float
+      bidder:
+        type: string
+  offerOffersAtNftResponse:
+    type: object
+    properties:
+      offers:
+        type: array
+        items:
+          type: object
+          properties:
+            offerId:
+              type: string
+            price:
+              type: number
+              format: float
+            bidder:
+              type: string

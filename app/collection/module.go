@@ -1,7 +1,8 @@
 package collection
 
 import (
-	types "phoenix-api/types/collection"
+	types "phoenix-marketplace-api/types/collection"
+
 	"google.golang.org/grpc"
 )
 

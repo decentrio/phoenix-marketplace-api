@@ -1,7 +1,8 @@
 package nft
 
 import (
-	types "phoenix-api/types/nft"
+	types "phoenix-marketplace-api/types/nft"
+
 	"google.golang.org/grpc"
 )
 

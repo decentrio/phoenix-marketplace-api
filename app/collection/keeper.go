@@ -3,7 +3,7 @@ package collection
 import (
 	"gorm.io/gorm"
 
-	types "phoenix-api/types/collection"
+	types "phoenix-marketplace-api/types/collection"
 )
 
 type Keeper struct {
@@ -18,4 +18,3 @@ func NewKeeper(db *gorm.DB) *Keeper {
 }
 
 var _ types.CollectionQueryServer = Keeper{}
-

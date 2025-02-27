@@ -1,0 +1,25 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Phoenix price API - gRPC Gateway docs",
+    "description": "A REST interface for price and trade queries",
+    "version": "1.0.0"
+  },
+  "apis": [
+    {
+      "url": "./tmp-swagger-gen/activity/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/auction/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/collection/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/nft/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/offer/query.swagger.json"
+    }
+  ]
+}

@@ -3,15 +3,16 @@ package offer
 import (
 	"context"
 
-	app "phoenix-api/app"
-	auctionTypes "phoenix-api/types/auction"
-	nftTypes "phoenix-api/types/nft"
-	types "phoenix-api/types/offer"
+	app "phoenix-marketplace-api/app"
+	dbtypes "phoenix-marketplace-api/database"
+	auctionTypes "phoenix-marketplace-api/types/auction"
+	nftTypes "phoenix-marketplace-api/types/nft"
+	types "phoenix-marketplace-api/types/offer"
 )
 
 func (k Keeper) OffersAtNft(ctx context.Context, request *types.OffersAtNftRequest) (*types.OffersAtNftResponse, error) {
 	var data []*types.Offer
-	var auctions []*auctionTypes.Auction
+	var auctions []*dbtypes.Auction
 
 	query := k.dbHandler.Table(app.AUCTION_TABLE).
 		Where("status = ?", "active").

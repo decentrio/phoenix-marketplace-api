@@ -1,7 +1,7 @@
 syntax = "proto3";
 package collection;
 
-option go_package = "phoenix-api/types/collection";
+option go_package = "phoenix-marketplace-api/types/collection";
 
 message Collection {
   string address = 1;
@@ -25,15 +25,13 @@ message CollectionPopular {
   uint32 total_items = 4;
 }
 
-message CollectionsAvailableRequest {
-}
+message CollectionsAvailableRequest {}
 
 message CollectionsAvailableResponse {
   repeated CollectionAvailable collections = 1;
 }
 
-message CollectionsPopularRequest {
-}
+message CollectionsPopularRequest {}
 
 message CollectionsPopularResponse {
   repeated CollectionPopular collections = 1;

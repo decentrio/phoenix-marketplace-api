@@ -3,14 +3,14 @@ package collection
 import (
 	"context"
 
-	app "phoenix-api/app"
-	types "phoenix-api/types/collection"
-	nftTypes "phoenix-api/types/nft"
+	app "phoenix-marketplace-api/app"
+	dbtypes "phoenix-marketplace-api/database"
+	types "phoenix-marketplace-api/types/collection"
 )
 
 func (k Keeper) CollectionsAvailable(ctx context.Context, request *types.CollectionsAvailableRequest) (*types.CollectionsAvailableResponse, error) {
 	var collectionInfos []*types.CollectionAvailable
-	var collections []*types.Collection
+	var collections []*dbtypes.Collection
 
 	err := k.dbHandler.Table(app.COLLECTION_TABLE).
 		Find(&collections).Error
@@ -23,8 +23,8 @@ func (k Keeper) CollectionsAvailable(ctx context.Context, request *types.Collect
 		collectionInfos = append(collectionInfos, &types.CollectionAvailable{
 			Id:          collection.Address,
 			Name:        collection.Name,
-			TotalItems:  collection.TotalItems,
-			Description: collection.Uri,
+			TotalItems:  uint32(collection.TotalItems),
+			Description: collection.URI,
 		})
 	}
 
@@ -35,7 +35,7 @@ func (k Keeper) CollectionsAvailable(ctx context.Context, request *types.Collect
 
 func (k Keeper) CollectionsPopular(ctx context.Context, request *types.CollectionsPopularRequest) (*types.CollectionsPopularResponse, error) {
 	var collectionInfos []*types.CollectionPopular
-	var volumes []*nftTypes.Volume
+	var volumes []*dbtypes.Volume
 
 	err := k.dbHandler.Table(app.VOLUME_TABLE).
 		Order("volume DESC").Limit(10).

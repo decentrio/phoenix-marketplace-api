@@ -5,7 +5,7 @@ import "google/api/annotations.proto";
 import "nft/nft.proto";
 import "nft/price.proto";
 
-option go_package = "phoenix-api/types/nft";
+option go_package = "phoenix-marketplace-api/types/nft";
 
 service NftQuery {
   // NftAtAccount queries list nfts at the given account_id

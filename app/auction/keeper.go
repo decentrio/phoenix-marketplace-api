@@ -3,7 +3,7 @@ package auction
 import (
 	"gorm.io/gorm"
 
-	types "phoenix-api/types/auction"
+	types "phoenix-marketplace-api/types/auction"
 )
 
 type Keeper struct {
@@ -18,4 +18,3 @@ func NewKeeper(db *gorm.DB) *Keeper {
 }
 
 var _ types.AuctionQueryServer = Keeper{}
-
