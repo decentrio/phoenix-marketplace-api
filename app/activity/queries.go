@@ -3,6 +3,7 @@ package activity
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 
 	app "phoenix-marketplace-api/app"
 	dbtypes "phoenix-marketplace-api/database"
@@ -14,9 +15,9 @@ import (
 func (k Keeper) ActivityAtNft(ctx context.Context, request *types.ActivityAtNftRequest) (*types.ActivityAtNftResponse, error) {
 	var activities []*dbtypes.Activity
 	var res []*types.ActivityInfo
-
+	nid := request.CollectionAddress + "@" + request.NftId
 	query := k.dbHandler.Table(app.ACTIVITY_TABLE).
-		Where("nid = ?", request.NftId)
+		Where("nid = ?", nid)
 
 	err := query.Find(&activities).Error
 	if err != nil {
@@ -30,7 +31,7 @@ func (k Keeper) ActivityAtNft(ctx context.Context, request *types.ActivityAtNftR
 		}
 		res = append(res, &types.ActivityInfo{
 			Type:      activity.Type,
-			Timestamp: string(activity.Timestamp),
+			Timestamp: strconv.FormatUint(activity.Timestamp, 10),
 			Details:   detail,
 		})
 	}

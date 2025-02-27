@@ -76,4 +76,5 @@ type Volume struct {
 	Amount     uint64 `json:"amount,omitempty"`
 	Volume     uint64 `json:"volume,omitempty"`
 	Token      string `json:"token,omitempty"`
+	Timestamp  uint64 `json:"timestamp,omitempty"`
 }

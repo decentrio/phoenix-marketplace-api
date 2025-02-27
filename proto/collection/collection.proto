@@ -4,9 +4,9 @@ package collection;
 option go_package = "phoenix-marketplace-api/types/collection";
 
 message Collection {
-  string address = 1;
+  string id = 1;
   string name = 2;
-  string symbol = 3;
+  string description = 3;
   string uri = 4;
   uint32 total_items = 5;
 }

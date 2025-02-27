@@ -116,11 +116,11 @@ paths:
                 items:
                   type: object
                   properties:
-                    address:
+                    id:
                       type: string
                     name:
                       type: string
-                    symbol:
+                    description:
                       type: string
                     uri:
                       type: string
@@ -215,9 +215,6 @@ paths:
                       type: string
                     metadata:
                       type: object
-                      properties:
-                        accountId:
-                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -401,6 +398,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    offerId:
+                      type: string
                     price:
                       type: number
                       format: float
@@ -531,11 +530,11 @@ definitions:
   collectionCollection:
     type: object
     properties:
-      address:
+      id:
         type: string
       name:
         type: string
-      symbol:
+      description:
         type: string
       uri:
         type: string
@@ -563,11 +562,11 @@ definitions:
         items:
           type: object
           properties:
-            address:
+            id:
               type: string
             name:
               type: string
-            symbol:
+            description:
               type: string
             uri:
               type: string
@@ -603,9 +602,6 @@ definitions:
         type: string
       metadata:
         type: object
-        properties:
-          accountId:
-            type: string
   nftNftAvailable:
     type: object
     properties:
@@ -630,11 +626,6 @@ definitions:
       tradeVolume:
         type: number
         format: float
-  nftNftsAtAccountRequest:
-    type: object
-    properties:
-      accountId:
-        type: string
   nftNftsAtAccountResponse:
     type: object
     properties:
@@ -651,9 +642,6 @@ definitions:
               type: string
             metadata:
               type: object
-              properties:
-                accountId:
-                  type: string
   nftNftsAvailableResponse:
     type: object
     properties:
@@ -714,6 +702,8 @@ definitions:
   offerOffer:
     type: object
     properties:
+      offerId:
+        type: string
       price:
         type: number
         format: float
@@ -727,6 +717,8 @@ definitions:
         items:
           type: object
           properties:
+            offerId:
+              type: string
             price:
               type: number
               format: float

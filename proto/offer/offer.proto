@@ -4,8 +4,9 @@ package offer;
 option go_package = "phoenix-marketplace-api/types/offer";
 
 message Offer {
-  float price = 1;
-  string bidder = 2;
+  string offer_id = 1;
+  float price = 2;
+  string bidder = 3;
 }
 
 message OffersAtNftRequest {

@@ -12,11 +12,5 @@ const (
 	BALANCE_TABLE    = "balances"
 	VOLUME_TABLE     = "volumes"
 	BID_TABLE        = "bids"
-	CONTRACT_CODES   = "contracts_codes"
-	INVOKE_TXS       = "invoke_transactions"
-	EVENT_TABLE      = "wasm_contract_events"
-	TRANSFER_TABLE   = "asset_contract_transfer_events"
-	MINT_TABLE       = "asset_contract_mint_events"
-	BURN_TABLE       = "asset_contract_burn_events"
-	CLAWBACK_TABLE   = "asset_contract_clawback_events"
+	DIVIDE_DECIMALS  = 10000000
 )

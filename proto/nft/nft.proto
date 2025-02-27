@@ -9,7 +9,7 @@ message Nft {
   string id = 1;
   string name = 2;
   string collection = 3;
-  NftsAtAccountRequest metadata = 4;
+  google.protobuf.Struct metadata = 4;
 }
 
 message NftAvailable {

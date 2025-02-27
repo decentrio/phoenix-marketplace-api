@@ -2,7 +2,7 @@ package nft
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
 
 	app "phoenix-marketplace-api/app"
 	dbtypes "phoenix-marketplace-api/database"
@@ -12,101 +12,158 @@ import (
 )
 
 func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountRequest) (*types.NftsAtAccountResponse, error) {
-	var data []*dbtypes.NFT
-	var nftIds []string
+	// Validate the request
+	if request.AccountId == "" {
+		return nil, fmt.Errorf("account_id cannot be empty")
+	}
 
+	var balances []dbtypes.Balance
 	err := k.dbHandler.Table(app.BALANCE_TABLE).
-		Select("nid").
 		Where("account = ?", request.AccountId).
-		Find(&nftIds).Error
-
+		Find(&balances).Error
 	if err != nil {
-		return &types.NftsAtAccountResponse{}, err
+		return nil, fmt.Errorf("failed to query balances: %v", err)
 	}
 
-	for _, nftId := range nftIds {
-		var nft types.Nft
-		if err = k.dbHandler.Table(app.NFT_TABLE).
-			Where("nid = ?", nftId).First(&nft).Error; err == nil {
-			metadata := &structpb.Struct{}
-			if err := json.Unmarshal([]byte(nft.Uri), metadata); err != nil {
-				return &types.NftsAtAccountResponse{}, err
-			}
-
-			data = append(data, &types.NftAtAccount{
-				Id:         nft.Id,
-				Name:       nft.Name,
-				Collection: nft.Collection,
-				Metadata:   nft.Uri,
-			})
-		}
+	nids := make([]string, 0, len(balances))
+	for _, balance := range balances {
+		nids = append(nids, balance.Nid)
 	}
 
-	return &types.NftsAtAccountResponse{
-		Nfts: data,
-	}, nil
-}
-
-func (k Keeper) NftsAvailable(ctx context.Context, request *types.NftsAvailableRequest) (*types.NftsAvailableResponse, error) {
-	var nftInfos []*types.NftAvailable
-	var nfts []*types.Nft
-
-	err := k.dbHandler.Table(app.NFT_TABLE).
+	var nfts []dbtypes.NFT
+	err = k.dbHandler.Table(app.NFT_TABLE).
+		Where("nid IN ?", nids).
 		Find(&nfts).Error
-
 	if err != nil {
-		return &types.NftsAvailableResponse{}, err
+		return nil, fmt.Errorf("failed to query NFTs: %v", err)
+	}
+
+	response := &types.NftsAtAccountResponse{
+		Nfts: make([]*types.Nft, 0, len(nfts)),
 	}
 
 	for _, nft := range nfts {
-		var price uint64
-		if err = k.dbHandler.Table(app.PRICE_TABLE).
-			Select("price").
-			Where("nid = ?", nft.Id).Order("tx_time DESC").First(&price).Error; err == nil {
-			nftInfos = append(nftInfos, &types.NftAvailable{
-				Id:         nft.Id,
-				Name:       nft.Name,
-				Collection: nft.Collection,
-				Price:      float32(price),
-			})
-		}
-	}
-
-	return &types.NftsAvailableResponse{
-		Nfts: nftInfos,
-	}, nil
-}
-
-func (k Keeper) NftsPopular(ctx context.Context, request *types.NftsPopularRequest) (*types.NftsPopularResponse, error) {
-	var nftInfos []*types.NftPopular
-	var volumes []*types.Volume
-
-	err := k.dbHandler.Table(app.VOLUME_TABLE).
-		Order("volume DESC").Limit(10).
-		Find(&volumes).Error
-
-	if err != nil {
-		return &types.NftsPopularResponse{}, err
-	}
-
-	for _, volume := range volumes {
-		nftInfos = append(nftInfos, &types.NftPopular{
-			Id:          volume.Nid,
-			Name:        volume.Token,
-			Collection:  volume.Collection,
-			TradeVolume: float32(volume.Volume),
+		metadata := &structpb.Struct{}
+		response.Nfts = append(response.Nfts, &types.Nft{
+			Id:         nft.ID,
+			Collection: nft.Collection,
+			Metadata:   metadata,
 		})
 	}
 
-	return &types.NftsPopularResponse{Nfts: nftInfos}, nil
+	return response, nil
+}
+
+func (k Keeper) NftsAvailable(ctx context.Context, request *types.NftsAvailableRequest) (*types.NftsAvailableResponse, error) {
+	var auctions []dbtypes.Auction
+	query := k.dbHandler.Table(app.AUCTION_TABLE).
+		Where("status = ?", "Active")
+
+	err := query.Find(&auctions).Error
+	if err != nil {
+		return nil, fmt.Errorf("failed to query auctions: %v", err)
+	}
+
+	nidSet := make(map[string]struct{})
+	for _, auction := range auctions {
+		nidSet[auction.Nid] = struct{}{}
+	}
+
+	// Convert the set of nids to a slice
+	nids := make([]string, 0, len(nidSet))
+	for nid := range nidSet {
+		nids = append(nids, nid)
+	}
+
+	var nfts []dbtypes.NFT
+	nftQuery := k.dbHandler.Table(app.NFT_TABLE).
+		Where("nid IN ?", nids)
+
+	if request.CollectionId != "" {
+		nftQuery = nftQuery.Where("collection = ?", request.CollectionId)
+	}
+
+	err = nftQuery.Find(&nfts).Error
+	if err != nil {
+		return nil, fmt.Errorf("failed to query NFTs: %v", err)
+	}
+
+	response := &types.NftsAvailableResponse{
+		Nfts: make([]*types.NftAvailable, 0, len(nfts)),
+	}
+	for _, nft := range nfts {
+		price := dbtypes.Price{}
+		err = k.dbHandler.Table(app.PRICE_TABLE).Where("nid = ?", nft.Nid).Order("tx_time DESC").First(&price).Error
+		if err != nil {
+			return nil, fmt.Errorf("failed to query NFT price: %v", err)
+		}
+		response.Nfts = append(response.Nfts, &types.NftAvailable{
+			Id:         nft.ID,
+			Collection: nft.Collection,
+			Price:      float32(price.Price) / app.DIVIDE_DECIMALS,
+		})
+	}
+
+	return response, nil
+}
+
+func (k Keeper) NftsPopular(ctx context.Context, request *types.NftsPopularRequest) (*types.NftsPopularResponse, error) {
+		// Step 1: Query the volume table to get the latest 1000 records
+	var volumes []dbtypes.Volume
+	err := k.dbHandler.Table(app.VOLUME_TABLE).
+		Order("timestamp DESC").
+		Limit(1000).
+		Find(&volumes).Error
+	if err != nil {
+		return nil, fmt.Errorf("failed to query volumes: %v", err)
+	}
+
+	volumeMap := make(map[string]float32)
+	for _, volume := range volumes {
+		volumeMap[volume.Nid] += float32(volume.Volume) / app.DIVIDE_DECIMALS
+	}
+
+	nids := make([]string, 0, len(volumeMap))
+	for nid := range volumeMap {
+		nids = append(nids, nid)
+	}
+
+	// Step 4: Query the NFT table to get details for each nid
+	var nfts []dbtypes.NFT
+	err = k.dbHandler.Table(app.NFT_TABLE).
+		Where("nid IN ?", nids).
+		Find(&nfts).Error
+	if err != nil {
+		return nil, fmt.Errorf("failed to query NFTs: %v", err)
+	}
+
+	// Step 5: Map the NFT details and trade volumes to the response format
+	response := &types.NftsPopularResponse{
+		Nfts: make([]*types.NftPopular, 0, len(nfts)),
+	}
+
+	for _, nft := range nfts {
+		// Get the total trade volume from the volume map
+		tradeVolume := volumeMap[nft.Nid]
+
+		// Add the NFT to the response
+		response.Nfts = append(response.Nfts, &types.NftPopular{
+			Id:           nft.ID,
+			Collection:   nft.Collection,
+			TradeVolume:  tradeVolume,
+		})
+	}
+
+	return response, nil
 }
 
 func (k Keeper) PriceHistory(ctx context.Context, request *types.PriceHistoryRequest) (*types.PriceHistoryResponse, error) {
-	var prices []*types.PriceHistory
+	var prices []*dbtypes.Price
 	var priceInfos []*types.PriceHistoryInfo
-
+	nid := request.CollectionAddress + "@" + request.NftId
 	err := k.dbHandler.Table(app.PRICE_TABLE).
-		Where("nid = ?", request.NftId).
+		Where("nid = ?", nid).
+		Order("tx_time DESC").
 		Find(&prices).Error
 
 	if err != nil {
@@ -116,7 +173,7 @@ func (k Keeper) PriceHistory(ctx context.Context, request *types.PriceHistoryReq
 	for _, price := range prices {
 		priceInfos = append(priceInfos, &types.PriceHistoryInfo{
 			Timestamp: price.TxTime,
-			Price:     float32(price.Price),
+			Price:     float32(price.Price) / app.DIVIDE_DECIMALS,
 		})
 	}
 
