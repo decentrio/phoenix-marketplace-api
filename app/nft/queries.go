@@ -7,8 +7,6 @@ import (
 	app "phoenix-marketplace-api/app"
 	dbtypes "phoenix-marketplace-api/database"
 	types "phoenix-marketplace-api/types/nft"
-
-	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountRequest) (*types.NftsAtAccountResponse, error) {
@@ -43,11 +41,10 @@ func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountR
 	}
 
 	for _, nft := range nfts {
-		metadata := &structpb.Struct{}
 		response.Nfts = append(response.Nfts, &types.Nft{
 			Id:         nft.ID,
 			Collection: nft.Collection,
-			Metadata:   metadata,
+			Metadata:   app.FetchAndParseJSON(nft.URI),
 		})
 	}
 
