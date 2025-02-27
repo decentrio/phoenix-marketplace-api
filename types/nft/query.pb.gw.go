@@ -83,9 +83,20 @@ func local_request_NftQuery_NftsAtAccount_0(ctx context.Context, marshaler runti
 
 }
 
+var (
+	filter_NftQuery_NftsAvailable_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
 func request_NftQuery_NftsAvailable_0(ctx context.Context, marshaler runtime.Marshaler, client NftQueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq NftsAvailableRequest
 	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_NftQuery_NftsAvailable_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := client.NftsAvailable(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -95,6 +106,13 @@ func request_NftQuery_NftsAvailable_0(ctx context.Context, marshaler runtime.Mar
 func local_request_NftQuery_NftsAvailable_0(ctx context.Context, marshaler runtime.Marshaler, server NftQueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq NftsAvailableRequest
 	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_NftQuery_NftsAvailable_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := server.NftsAvailable(ctx, &protoReq)
 	return msg, metadata, err
@@ -130,6 +148,16 @@ func request_NftQuery_PriceHistory_0(ctx context.Context, marshaler runtime.Mars
 		_   = err
 	)
 
+	val, ok = pathParams["collection_address"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "collection_address")
+	}
+
+	protoReq.CollectionAddress, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "collection_address", err)
+	}
+
 	val, ok = pathParams["nft_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "nft_id")
@@ -155,6 +183,16 @@ func local_request_NftQuery_PriceHistory_0(ctx context.Context, marshaler runtim
 		err error
 		_   = err
 	)
+
+	val, ok = pathParams["collection_address"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "collection_address")
+	}
+
+	protoReq.CollectionAddress, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "collection_address", err)
+	}
 
 	val, ok = pathParams["nft_id"]
 	if !ok {
@@ -260,7 +298,7 @@ func RegisterNftQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, s
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/PriceHistory", runtime.WithHTTPPathPattern("/nft/{nft_id}/price-history"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/PriceHistory", runtime.WithHTTPPathPattern("/nft/{collection_address}/{nft_id}/price-history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -390,7 +428,7 @@ func RegisterNftQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/PriceHistory", runtime.WithHTTPPathPattern("/nft/{nft_id}/price-history"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/PriceHistory", runtime.WithHTTPPathPattern("/nft/{collection_address}/{nft_id}/price-history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -416,7 +454,7 @@ var (
 
 	pattern_NftQuery_NftsPopular_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"marketplace", "popular", "nfts"}, ""))
 
-	pattern_NftQuery_PriceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"nft", "nft_id", "price-history"}, ""))
+	pattern_NftQuery_PriceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"nft", "collection_address", "nft_id", "price-history"}, ""))
 )
 
 var (

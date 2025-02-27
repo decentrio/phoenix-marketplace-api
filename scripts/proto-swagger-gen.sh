@@ -15,7 +15,7 @@ for dir in $proto_dirs; do
     buf generate --template buf.gen.swagger.yaml "$query_file"
   fi
 done
-rm -rf github.com
+rm -rf phoenix-marketplace-api
 
 cd ..
 echo "Combine swagger files"

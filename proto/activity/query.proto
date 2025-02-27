@@ -10,6 +10,7 @@ service ActivityQuery {
 
   // NftsPopular queries list popular activity
   rpc ActivityAtNft(ActivityAtNftRequest) returns (ActivityAtNftResponse) {
-    option (google.api.http).get = "/nft/{nft_id}/activity";
+    option (google.api.http).get =
+        "/nft/{collection_address}/{nft_id}/activity";
   }
 }

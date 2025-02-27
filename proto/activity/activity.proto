@@ -5,12 +5,6 @@ import "google/protobuf/struct.proto";
 
 option go_package = "phoenix-marketplace-api/types/activvity";
 
-message Activity {
-  string nid = 1;
-  string type = 2;
-  string details = 3;
-}
-
 message ActivityInfo {
   string type = 1;
   string timestamp = 2;

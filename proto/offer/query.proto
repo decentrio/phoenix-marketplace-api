@@ -9,6 +9,6 @@ option go_package = "phoenix-marketplace-api/types/offer";
 service OfferQuery {
   // NftAtAccount queries list nfts at the given offers
   rpc OffersAtNft(OffersAtNftRequest) returns (OffersAtNftResponse) {
-    option (google.api.http).get = "/nft/{nft_id}/offers";
+    option (google.api.http).get = "/nft/{collection_address}/{nft_id}/offers";
   }
 }

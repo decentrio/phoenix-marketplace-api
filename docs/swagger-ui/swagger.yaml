@@ -4,7 +4,7 @@ info:
   description: A REST interface for price and trade queries
   version: 1.0.0
 paths:
-  /nft/{nftId}/activity:
+  /nft/{collectionAddress}/{nftId}/activity:
     get:
       summary: NftsPopular queries list popular activity
       operationId: ActivityAtNft
@@ -44,13 +44,13 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: nftId
+        - name: collectionAddress
           in: path
           required: true
           type: string
-        - name: collectionAddress
-          in: query
-          required: false
+        - name: nftId
+          in: path
+          required: true
           type: string
       tags:
         - ActivityQuery
@@ -116,15 +116,17 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
+                    address:
                       type: string
                     name:
+                      type: string
+                    symbol:
+                      type: string
+                    uri:
                       type: string
                     totalItems:
                       type: integer
                       format: int64
-                    description:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -213,6 +215,9 @@ paths:
                       type: string
                     metadata:
                       type: object
+                      properties:
+                        accountId:
+                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -280,6 +285,11 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: collectionId
+          in: query
+          required: false
+          type: string
       tags:
         - NftQuery
   /marketplace/popular/nfts:
@@ -326,7 +336,7 @@ paths:
                   additionalProperties: {}
       tags:
         - NftQuery
-  /nft/{nftId}/price-history:
+  /nft/{collectionAddress}/{nftId}/price-history:
     get:
       summary: PriceHistory queries list price of nft
       operationId: PriceHistory
@@ -366,13 +376,17 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
+        - name: collectionAddress
+          in: path
+          required: true
+          type: string
         - name: nftId
           in: path
           required: true
           type: string
       tags:
         - NftQuery
-  /nft/{nftId}/offers:
+  /nft/{collectionAddress}/{nftId}/offers:
     get:
       summary: NftAtAccount queries list nfts at the given offers
       operationId: OffersAtNft
@@ -387,8 +401,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    offerId:
-                      type: string
                     price:
                       type: number
                       format: float
@@ -413,13 +425,13 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: nftId
+        - name: collectionAddress
           in: path
           required: true
           type: string
-        - name: collectionAddress
-          in: query
-          required: false
+        - name: nftId
+          in: path
+          required: true
           type: string
       tags:
         - OfferQuery
@@ -516,18 +528,20 @@ definitions:
             endTime:
               type: string
               format: uint64
-  collectionCollectionAvailable:
+  collectionCollection:
     type: object
     properties:
-      id:
+      address:
         type: string
       name:
+        type: string
+      symbol:
+        type: string
+      uri:
         type: string
       totalItems:
         type: integer
         format: int64
-      description:
-        type: string
   collectionCollectionPopular:
     type: object
     properties:
@@ -549,15 +563,17 @@ definitions:
         items:
           type: object
           properties:
-            id:
+            address:
               type: string
             name:
+              type: string
+            symbol:
+              type: string
+            uri:
               type: string
             totalItems:
               type: integer
               format: int64
-            description:
-              type: string
   collectionCollectionsPopularResponse:
     type: object
     properties:
@@ -576,7 +592,7 @@ definitions:
             totalItems:
               type: integer
               format: int64
-  nftNftAtAccount:
+  nftNft:
     type: object
     properties:
       id:
@@ -587,6 +603,9 @@ definitions:
         type: string
       metadata:
         type: object
+        properties:
+          accountId:
+            type: string
   nftNftAvailable:
     type: object
     properties:
@@ -611,6 +630,11 @@ definitions:
       tradeVolume:
         type: number
         format: float
+  nftNftsAtAccountRequest:
+    type: object
+    properties:
+      accountId:
+        type: string
   nftNftsAtAccountResponse:
     type: object
     properties:
@@ -627,6 +651,9 @@ definitions:
               type: string
             metadata:
               type: object
+              properties:
+                accountId:
+                  type: string
   nftNftsAvailableResponse:
     type: object
     properties:
@@ -687,8 +714,6 @@ definitions:
   offerOffer:
     type: object
     properties:
-      offerId:
-        type: string
       price:
         type: number
         format: float
@@ -702,8 +727,6 @@ definitions:
         items:
           type: object
           properties:
-            offerId:
-              type: string
             price:
               type: number
               format: float

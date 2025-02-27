@@ -9,14 +9,7 @@ message Nft {
   string id = 1;
   string name = 2;
   string collection = 3;
-  string uri = 4;
-}
-
-message NftAtAccount {
-  string id = 1;
-  string name = 2;
-  string collection = 3;
-  google.protobuf.Struct metadata = 4;
+  NftsAtAccountRequest metadata = 4;
 }
 
 message NftAvailable {
@@ -35,9 +28,9 @@ message NftPopular {
 
 message NftsAtAccountRequest { string account_id = 1; }
 
-message NftsAtAccountResponse { repeated NftAtAccount nfts = 1; }
+message NftsAtAccountResponse { repeated Nft nfts = 1; }
 
-message NftsAvailableRequest {}
+message NftsAvailableRequest { string collection_id = 1; }
 
 message NftsAvailableResponse { repeated NftAvailable nfts = 1; }
 

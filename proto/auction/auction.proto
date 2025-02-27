@@ -3,19 +3,6 @@ package auction;
 
 option go_package = "phoenix-marketplace-api/types/auction";
 
-message Auction {
-  uint64 id = 1;
-  string seller = 2;
-  uint64 highest_bid = 3;
-  uint64 end_time = 4;
-  string status = 5;
-  string auction_token = 6;
-  string nid = 7;
-  uint64 api = 8;
-  uint64 minimum_price = 9;
-  uint64 buy_now_price = 10;
-}
-
 message AuctionInfo {
   string auction_id = 1;
   string nft_id = 2;

@@ -27,9 +27,7 @@ message CollectionPopular {
 
 message CollectionsAvailableRequest {}
 
-message CollectionsAvailableResponse {
-  repeated CollectionAvailable collections = 1;
-}
+message CollectionsAvailableResponse { repeated Collection collections = 1; }
 
 message CollectionsPopularRequest {}
 

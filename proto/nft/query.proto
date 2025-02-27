@@ -25,6 +25,7 @@ service NftQuery {
 
   // PriceHistory queries list price of nft
   rpc PriceHistory(PriceHistoryRequest) returns (PriceHistoryResponse) {
-    option (google.api.http).get = "/nft/{nft_id}/price-history";
+    option (google.api.http).get =
+        "/nft/{collection_address}/{nft_id}/price-history";
   }
 }
