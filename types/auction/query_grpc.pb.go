@@ -20,14 +20,17 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	AuctionQuery_AuctionsAvailable_FullMethodName = "/auction.AuctionQuery/AuctionsAvailable"
+	AuctionQuery_Auctions_FullMethodName          = "/auction.AuctionQuery/Auctions"
+	AuctionQuery_AuctionDetail_FullMethodName     = "/auction.AuctionQuery/AuctionDetail"
 )
 
 // AuctionQueryClient is the client API for AuctionQuery service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuctionQueryClient interface {
-	// NftsAvailable queries list available Auctions
 	AuctionsAvailable(ctx context.Context, in *AuctionsAvailableRequest, opts ...grpc.CallOption) (*AuctionsAvailableResponse, error)
+	Auctions(ctx context.Context, in *AuctionsRequest, opts ...grpc.CallOption) (*AuctionsResponse, error)
+	AuctionDetail(ctx context.Context, in *AuctionDetailRequest, opts ...grpc.CallOption) (*AuctionDetailResponse, error)
 }
 
 type auctionQueryClient struct {
@@ -48,12 +51,33 @@ func (c *auctionQueryClient) AuctionsAvailable(ctx context.Context, in *Auctions
 	return out, nil
 }
 
+func (c *auctionQueryClient) Auctions(ctx context.Context, in *AuctionsRequest, opts ...grpc.CallOption) (*AuctionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuctionsResponse)
+	err := c.cc.Invoke(ctx, AuctionQuery_Auctions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *auctionQueryClient) AuctionDetail(ctx context.Context, in *AuctionDetailRequest, opts ...grpc.CallOption) (*AuctionDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuctionDetailResponse)
+	err := c.cc.Invoke(ctx, AuctionQuery_AuctionDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuctionQueryServer is the server API for AuctionQuery service.
 // All implementations must embed UnimplementedAuctionQueryServer
 // for forward compatibility.
 type AuctionQueryServer interface {
-	// NftsAvailable queries list available Auctions
 	AuctionsAvailable(context.Context, *AuctionsAvailableRequest) (*AuctionsAvailableResponse, error)
+	Auctions(context.Context, *AuctionsRequest) (*AuctionsResponse, error)
+	AuctionDetail(context.Context, *AuctionDetailRequest) (*AuctionDetailResponse, error)
 	mustEmbedUnimplementedAuctionQueryServer()
 }
 
@@ -66,6 +90,12 @@ type UnimplementedAuctionQueryServer struct{}
 
 func (UnimplementedAuctionQueryServer) AuctionsAvailable(context.Context, *AuctionsAvailableRequest) (*AuctionsAvailableResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AuctionsAvailable not implemented")
+}
+func (UnimplementedAuctionQueryServer) Auctions(context.Context, *AuctionsRequest) (*AuctionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Auctions not implemented")
+}
+func (UnimplementedAuctionQueryServer) AuctionDetail(context.Context, *AuctionDetailRequest) (*AuctionDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AuctionDetail not implemented")
 }
 func (UnimplementedAuctionQueryServer) mustEmbedUnimplementedAuctionQueryServer() {}
 func (UnimplementedAuctionQueryServer) testEmbeddedByValue()                      {}
@@ -106,6 +136,42 @@ func _AuctionQuery_AuctionsAvailable_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuctionQuery_Auctions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuctionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuctionQueryServer).Auctions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuctionQuery_Auctions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuctionQueryServer).Auctions(ctx, req.(*AuctionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuctionQuery_AuctionDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuctionDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuctionQueryServer).AuctionDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuctionQuery_AuctionDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuctionQueryServer).AuctionDetail(ctx, req.(*AuctionDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuctionQuery_ServiceDesc is the grpc.ServiceDesc for AuctionQuery service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -116,6 +182,14 @@ var AuctionQuery_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AuctionsAvailable",
 			Handler:    _AuctionQuery_AuctionsAvailable_Handler,
+		},
+		{
+			MethodName: "Auctions",
+			Handler:    _AuctionQuery_Auctions_Handler,
+		},
+		{
+			MethodName: "AuctionDetail",
+			Handler:    _AuctionQuery_AuctionDetail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -28,4 +28,20 @@ service NftQuery {
     option (google.api.http).get =
         "/nft/{collection_address}/{nft_id}/price-history";
   }
+
+  rpc NftDetail(NftDetailRequest) returns (NftDetailResponse) {
+    option (google.api.http).get = "/nft/{collection}/{id}";
+  }
+
+  rpc AllNfts(AllNftsRequest) returns (AllNftsResponse) {
+    option (google.api.http).get = "/nft/all";
+  }
+
+  rpc Nfts(NftsRequest) returns (NftsResponse) {
+    option (google.api.http).get = "/nft/{collection}";
+  }
+
+  rpc NftVolume(NftVolumeRequest) returns (NftVolumeResponse) {
+    option (google.api.http).get = "/nft/volume/{collection}/{id}";
+  }
 }

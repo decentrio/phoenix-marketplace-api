@@ -11,6 +11,37 @@ message AuctionInfo {
   uint64 end_time = 5;
 }
 
+message Bid {
+  string bidder = 1;
+  uint64 bid_amount = 2;
+}
+
 message AuctionsAvailableRequest {}
 
 message AuctionsAvailableResponse { repeated AuctionInfo auctions = 1; }
+
+message AuctionsRequest {
+  string status = 1;
+}
+
+message AuctionsResponse { repeated AuctionInfo auctions = 1; }
+
+message AuctionDetail {
+  string auction_id = 1;
+  string nft_id = 2;
+  string collection = 3;
+  float current_bid = 4;
+  uint64 end_time = 5;
+  string auction_token = 6;
+  uint64 amount = 7;
+  float minimum_price = 8;
+  float buy_now_price = 9;
+  string status = 10;
+  repeated Bid bids = 11;
+}
+
+message AuctionDetailRequest {
+  string auction_id = 1;
+}
+
+message AuctionDetailResponse { AuctionDetail data = 1; }

@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	CollectionQuery_CollectionsAvailable_FullMethodName = "/collection.CollectionQuery/CollectionsAvailable"
 	CollectionQuery_CollectionsPopular_FullMethodName   = "/collection.CollectionQuery/CollectionsPopular"
+	CollectionQuery_Collections_FullMethodName          = "/collection.CollectionQuery/Collections"
+	CollectionQuery_CollectionDetail_FullMethodName     = "/collection.CollectionQuery/CollectionDetail"
 )
 
 // CollectionQueryClient is the client API for CollectionQuery service.
@@ -31,6 +33,8 @@ type CollectionQueryClient interface {
 	CollectionsAvailable(ctx context.Context, in *CollectionsAvailableRequest, opts ...grpc.CallOption) (*CollectionsAvailableResponse, error)
 	// NftsPopular queries list popular Collections
 	CollectionsPopular(ctx context.Context, in *CollectionsPopularRequest, opts ...grpc.CallOption) (*CollectionsPopularResponse, error)
+	Collections(ctx context.Context, in *CollectionsRequest, opts ...grpc.CallOption) (*CollectionsResponse, error)
+	CollectionDetail(ctx context.Context, in *CollectionDetailRequest, opts ...grpc.CallOption) (*CollectionDetailResponse, error)
 }
 
 type collectionQueryClient struct {
@@ -61,6 +65,26 @@ func (c *collectionQueryClient) CollectionsPopular(ctx context.Context, in *Coll
 	return out, nil
 }
 
+func (c *collectionQueryClient) Collections(ctx context.Context, in *CollectionsRequest, opts ...grpc.CallOption) (*CollectionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CollectionsResponse)
+	err := c.cc.Invoke(ctx, CollectionQuery_Collections_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *collectionQueryClient) CollectionDetail(ctx context.Context, in *CollectionDetailRequest, opts ...grpc.CallOption) (*CollectionDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CollectionDetailResponse)
+	err := c.cc.Invoke(ctx, CollectionQuery_CollectionDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CollectionQueryServer is the server API for CollectionQuery service.
 // All implementations must embed UnimplementedCollectionQueryServer
 // for forward compatibility.
@@ -69,6 +93,8 @@ type CollectionQueryServer interface {
 	CollectionsAvailable(context.Context, *CollectionsAvailableRequest) (*CollectionsAvailableResponse, error)
 	// NftsPopular queries list popular Collections
 	CollectionsPopular(context.Context, *CollectionsPopularRequest) (*CollectionsPopularResponse, error)
+	Collections(context.Context, *CollectionsRequest) (*CollectionsResponse, error)
+	CollectionDetail(context.Context, *CollectionDetailRequest) (*CollectionDetailResponse, error)
 	mustEmbedUnimplementedCollectionQueryServer()
 }
 
@@ -84,6 +110,12 @@ func (UnimplementedCollectionQueryServer) CollectionsAvailable(context.Context, 
 }
 func (UnimplementedCollectionQueryServer) CollectionsPopular(context.Context, *CollectionsPopularRequest) (*CollectionsPopularResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CollectionsPopular not implemented")
+}
+func (UnimplementedCollectionQueryServer) Collections(context.Context, *CollectionsRequest) (*CollectionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Collections not implemented")
+}
+func (UnimplementedCollectionQueryServer) CollectionDetail(context.Context, *CollectionDetailRequest) (*CollectionDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CollectionDetail not implemented")
 }
 func (UnimplementedCollectionQueryServer) mustEmbedUnimplementedCollectionQueryServer() {}
 func (UnimplementedCollectionQueryServer) testEmbeddedByValue()                         {}
@@ -142,6 +174,42 @@ func _CollectionQuery_CollectionsPopular_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CollectionQuery_Collections_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CollectionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CollectionQueryServer).Collections(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CollectionQuery_Collections_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CollectionQueryServer).Collections(ctx, req.(*CollectionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CollectionQuery_CollectionDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CollectionDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CollectionQueryServer).CollectionDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CollectionQuery_CollectionDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CollectionQueryServer).CollectionDetail(ctx, req.(*CollectionDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CollectionQuery_ServiceDesc is the grpc.ServiceDesc for CollectionQuery service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -156,6 +224,14 @@ var CollectionQuery_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CollectionsPopular",
 			Handler:    _CollectionQuery_CollectionsPopular_Handler,
+		},
+		{
+			MethodName: "Collections",
+			Handler:    _CollectionQuery_Collections_Handler,
+		},
+		{
+			MethodName: "CollectionDetail",
+			Handler:    _CollectionQuery_CollectionDetail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

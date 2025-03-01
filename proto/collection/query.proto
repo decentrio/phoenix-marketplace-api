@@ -18,4 +18,13 @@ service CollectionQuery {
       returns (CollectionsPopularResponse) {
     option (google.api.http).get = "/marketplace/popular/collections";
   }
+
+  rpc Collections(CollectionsRequest) returns (CollectionsResponse) {
+    option (google.api.http).get = "/collections";
+  }
+
+  rpc CollectionDetail(CollectionDetailRequest)
+      returns (CollectionDetailResponse) {
+    option (google.api.http).get = "/collection/{address}";
+  }
 }

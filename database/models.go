@@ -7,7 +7,7 @@ type Collection struct {
 	Address    string `gorm:"primaryKey" json:"address,omitempty"`
 	Name       string `json:"name,omitempty"`
 	Symbol     string `json:"symbol,omitempty"`
-	URI        string `json:"uri,omitempty"`
+	Metadata   []byte `json:"metadata,omitempty"`
 	TotalItems uint64 `json:"total_items,omitempty"`
 }
 
@@ -16,7 +16,7 @@ type NFT struct {
 	Nid        string `gorm:"primaryKey" json:"nid,omitempty"`
 	ID         string `json:"id,omitempty"`
 	Collection string `json:"collection,omitempty"`
-	URI        string `json:"uri,omitempty"`
+	Metadata   []byte `json:"metadata,omitempty"`
 }
 
 // collection: mint, mint_batch, burn, burn_batch, safe_transfer_from, safe_batch_transfer_from, buy_now, finalize_auction

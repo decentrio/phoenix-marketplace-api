@@ -2,11 +2,14 @@ package nft
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	app "phoenix-marketplace-api/app"
 	dbtypes "phoenix-marketplace-api/database"
 	types "phoenix-marketplace-api/types/nft"
+
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountRequest) (*types.NftsAtAccountResponse, error) {
@@ -41,10 +44,15 @@ func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountR
 	}
 
 	for _, nft := range nfts {
+		metadata := &structpb.Struct{}
+		err := json.Unmarshal(nft.Metadata, metadata)
+		if err != nil {
+			return &types.NftsAtAccountResponse{}, err
+		}
 		response.Nfts = append(response.Nfts, &types.Nft{
 			Id:         nft.ID,
 			Collection: nft.Collection,
-			Metadata:   app.FetchAndParseJSON(nft.URI),
+			Metadata:   metadata,
 		})
 	}
 
@@ -105,7 +113,7 @@ func (k Keeper) NftsAvailable(ctx context.Context, request *types.NftsAvailableR
 }
 
 func (k Keeper) NftsPopular(ctx context.Context, request *types.NftsPopularRequest) (*types.NftsPopularResponse, error) {
-		// Step 1: Query the volume table to get the latest 1000 records
+	// Step 1: Query the volume table to get the latest 1000 records
 	var volumes []dbtypes.Volume
 	err := k.dbHandler.Table(app.VOLUME_TABLE).
 		Order("timestamp DESC").
@@ -145,9 +153,9 @@ func (k Keeper) NftsPopular(ctx context.Context, request *types.NftsPopularReque
 
 		// Add the NFT to the response
 		response.Nfts = append(response.Nfts, &types.NftPopular{
-			Id:           nft.ID,
-			Collection:   nft.Collection,
-			TradeVolume:  tradeVolume,
+			Id:          nft.ID,
+			Collection:  nft.Collection,
+			TradeVolume: tradeVolume,
 		})
 	}
 
@@ -176,5 +184,93 @@ func (k Keeper) PriceHistory(ctx context.Context, request *types.PriceHistoryReq
 
 	return &types.PriceHistoryResponse{
 		PriceHistory: priceInfos,
+	}, nil
+}
+
+func (k Keeper) AllNfts(ctx context.Context, request *types.AllNftsRequest) (*types.AllNftsResponse, error) {
+	var nfts []*dbtypes.NFT
+	err := k.dbHandler.Table(app.NFT_TABLE).
+		Find(&nfts).Error
+	if err != nil {
+		return &types.AllNftsResponse{}, err
+	}
+
+	response := &types.AllNftsResponse{}
+	for _, nft := range nfts {
+		metadata := &structpb.Struct{}
+		err := json.Unmarshal(nft.Metadata, metadata)
+		if err != nil {
+			return &types.AllNftsResponse{}, err
+		}
+		response.Data = append(response.Data, &types.Nft{
+			Id:         nft.ID,
+			Collection: nft.Collection,
+			Metadata:   metadata,
+		})
+	}
+	return response, nil
+}
+
+func (k Keeper) Nfts(ctx context.Context, request *types.NftsRequest) (*types.NftsResponse, error) {
+	var nfts []*dbtypes.NFT
+	err := k.dbHandler.Table(app.NFT_TABLE).Where("collection = ?", request.Collection).
+		Find(&nfts).Error
+	if err != nil {
+		return &types.NftsResponse{}, err
+	}
+
+	response := &types.NftsResponse{}
+	for _, nft := range nfts {
+		metadata := &structpb.Struct{}
+		err := json.Unmarshal(nft.Metadata, metadata)
+		if err != nil {
+			return &types.NftsResponse{}, err
+		}
+		response.Data = append(response.Data, &types.Nft{
+			Id:         nft.ID,
+			Collection: nft.Collection,
+			Metadata:   metadata,
+		})
+	}
+	return response, nil
+}
+
+func (k Keeper) NftVolume(ctx context.Context, request *types.NftVolumeRequest) (*types.NftVolumeResponse, error) {
+	var vols []*types.VolumnInfo
+	nid := request.Collection + "@" + request.Id
+	err := k.dbHandler.Table(app.VOLUME_TABLE).
+		Select("amount", "volume", "token", "timestamp").
+		Where("nid = ?", nid).
+		Order("timestamp DESC").
+		Find(&vols).Error
+	if err != nil {
+		return &types.NftVolumeResponse{}, err
+	}
+
+	return &types.NftVolumeResponse{
+		Volumes: vols,
+	}, nil
+}
+
+func (k Keeper) NftDetail(ctx context.Context, request *types.NftDetailRequest) (*types.NftDetailResponse, error) {
+	var nft dbtypes.NFT
+	nid := request.Collection + "@" + request.Id
+	err := k.dbHandler.Table(app.NFT_TABLE).
+		Where("nid = ?", nid).
+		First(&nft).Error
+	if err != nil {
+		return &types.NftDetailResponse{}, err
+	}
+	metadata := &structpb.Struct{}
+	err = json.Unmarshal(nft.Metadata, metadata)
+	if err != nil {
+		return &types.NftDetailResponse{}, err
+	}
+	return &types.NftDetailResponse{
+		Data: &types.Nft{
+			Id: request.Id,
+			Collection: request.Collection,
+			Metadata: metadata,
+		},
 	}, nil
 }

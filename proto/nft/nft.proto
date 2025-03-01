@@ -7,23 +7,20 @@ option go_package = "phoenix-marketplace-api/types/nft";
 
 message Nft {
   string id = 1;
-  string name = 2;
-  string collection = 3;
-  google.protobuf.Struct metadata = 4;
+  string collection = 2;
+  google.protobuf.Struct metadata = 3;
 }
 
 message NftAvailable {
   string id = 1;
-  string name = 2;
-  string collection = 3;
-  float price = 4;
+  string collection = 2;
+  float price = 3;
 }
 
 message NftPopular {
   string id = 1;
-  string name = 2;
-  string collection = 3;
-  float trade_volume = 4;
+  string collection = 2;
+  float trade_volume = 3;
 }
 
 message NftsAtAccountRequest { string account_id = 1; }
@@ -37,3 +34,34 @@ message NftsAvailableResponse { repeated NftAvailable nfts = 1; }
 message NftsPopularRequest {}
 
 message NftsPopularResponse { repeated NftPopular nfts = 1; }
+
+message NftDetailRequest {
+  string collection = 1;
+  string id = 2;
+}
+
+message NftDetailResponse { Nft data = 1; }
+
+message AllNftsRequest {}
+
+message AllNftsResponse { repeated Nft data = 1; }
+
+message NftsRequest { string collection = 1; }
+
+message NftsResponse { repeated Nft data = 1; }
+
+message NftVolumeRequest {
+  string collection = 1;
+  string id = 2;
+}
+
+message VolumnInfo {
+  uint64 amount = 1;
+  uint64 volume = 2;
+  string token = 3;
+  uint64 timestamp = 4;
+}
+
+message NftVolumeResponse {
+  repeated VolumnInfo volumes = 1;
+}

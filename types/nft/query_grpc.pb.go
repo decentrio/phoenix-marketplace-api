@@ -23,6 +23,10 @@ const (
 	NftQuery_NftsAvailable_FullMethodName = "/nft.NftQuery/NftsAvailable"
 	NftQuery_NftsPopular_FullMethodName   = "/nft.NftQuery/NftsPopular"
 	NftQuery_PriceHistory_FullMethodName  = "/nft.NftQuery/PriceHistory"
+	NftQuery_NftDetail_FullMethodName     = "/nft.NftQuery/NftDetail"
+	NftQuery_AllNfts_FullMethodName       = "/nft.NftQuery/AllNfts"
+	NftQuery_Nfts_FullMethodName          = "/nft.NftQuery/Nfts"
+	NftQuery_NftVolume_FullMethodName     = "/nft.NftQuery/NftVolume"
 )
 
 // NftQueryClient is the client API for NftQuery service.
@@ -37,6 +41,10 @@ type NftQueryClient interface {
 	NftsPopular(ctx context.Context, in *NftsPopularRequest, opts ...grpc.CallOption) (*NftsPopularResponse, error)
 	// PriceHistory queries list price of nft
 	PriceHistory(ctx context.Context, in *PriceHistoryRequest, opts ...grpc.CallOption) (*PriceHistoryResponse, error)
+	NftDetail(ctx context.Context, in *NftDetailRequest, opts ...grpc.CallOption) (*NftDetailResponse, error)
+	AllNfts(ctx context.Context, in *AllNftsRequest, opts ...grpc.CallOption) (*AllNftsResponse, error)
+	Nfts(ctx context.Context, in *NftsRequest, opts ...grpc.CallOption) (*NftsResponse, error)
+	NftVolume(ctx context.Context, in *NftVolumeRequest, opts ...grpc.CallOption) (*NftVolumeResponse, error)
 }
 
 type nftQueryClient struct {
@@ -87,6 +95,46 @@ func (c *nftQueryClient) PriceHistory(ctx context.Context, in *PriceHistoryReque
 	return out, nil
 }
 
+func (c *nftQueryClient) NftDetail(ctx context.Context, in *NftDetailRequest, opts ...grpc.CallOption) (*NftDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NftDetailResponse)
+	err := c.cc.Invoke(ctx, NftQuery_NftDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nftQueryClient) AllNfts(ctx context.Context, in *AllNftsRequest, opts ...grpc.CallOption) (*AllNftsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AllNftsResponse)
+	err := c.cc.Invoke(ctx, NftQuery_AllNfts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nftQueryClient) Nfts(ctx context.Context, in *NftsRequest, opts ...grpc.CallOption) (*NftsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NftsResponse)
+	err := c.cc.Invoke(ctx, NftQuery_Nfts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nftQueryClient) NftVolume(ctx context.Context, in *NftVolumeRequest, opts ...grpc.CallOption) (*NftVolumeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NftVolumeResponse)
+	err := c.cc.Invoke(ctx, NftQuery_NftVolume_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NftQueryServer is the server API for NftQuery service.
 // All implementations must embed UnimplementedNftQueryServer
 // for forward compatibility.
@@ -99,6 +147,10 @@ type NftQueryServer interface {
 	NftsPopular(context.Context, *NftsPopularRequest) (*NftsPopularResponse, error)
 	// PriceHistory queries list price of nft
 	PriceHistory(context.Context, *PriceHistoryRequest) (*PriceHistoryResponse, error)
+	NftDetail(context.Context, *NftDetailRequest) (*NftDetailResponse, error)
+	AllNfts(context.Context, *AllNftsRequest) (*AllNftsResponse, error)
+	Nfts(context.Context, *NftsRequest) (*NftsResponse, error)
+	NftVolume(context.Context, *NftVolumeRequest) (*NftVolumeResponse, error)
 	mustEmbedUnimplementedNftQueryServer()
 }
 
@@ -120,6 +172,18 @@ func (UnimplementedNftQueryServer) NftsPopular(context.Context, *NftsPopularRequ
 }
 func (UnimplementedNftQueryServer) PriceHistory(context.Context, *PriceHistoryRequest) (*PriceHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PriceHistory not implemented")
+}
+func (UnimplementedNftQueryServer) NftDetail(context.Context, *NftDetailRequest) (*NftDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NftDetail not implemented")
+}
+func (UnimplementedNftQueryServer) AllNfts(context.Context, *AllNftsRequest) (*AllNftsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllNfts not implemented")
+}
+func (UnimplementedNftQueryServer) Nfts(context.Context, *NftsRequest) (*NftsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Nfts not implemented")
+}
+func (UnimplementedNftQueryServer) NftVolume(context.Context, *NftVolumeRequest) (*NftVolumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NftVolume not implemented")
 }
 func (UnimplementedNftQueryServer) mustEmbedUnimplementedNftQueryServer() {}
 func (UnimplementedNftQueryServer) testEmbeddedByValue()                  {}
@@ -214,6 +278,78 @@ func _NftQuery_PriceHistory_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NftQuery_NftDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NftDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NftQueryServer).NftDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NftQuery_NftDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NftQueryServer).NftDetail(ctx, req.(*NftDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NftQuery_AllNfts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AllNftsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NftQueryServer).AllNfts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NftQuery_AllNfts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NftQueryServer).AllNfts(ctx, req.(*AllNftsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NftQuery_Nfts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NftsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NftQueryServer).Nfts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NftQuery_Nfts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NftQueryServer).Nfts(ctx, req.(*NftsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NftQuery_NftVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NftVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NftQueryServer).NftVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NftQuery_NftVolume_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NftQueryServer).NftVolume(ctx, req.(*NftVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NftQuery_ServiceDesc is the grpc.ServiceDesc for NftQuery service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -236,6 +372,22 @@ var NftQuery_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PriceHistory",
 			Handler:    _NftQuery_PriceHistory_Handler,
+		},
+		{
+			MethodName: "NftDetail",
+			Handler:    _NftQuery_NftDetail_Handler,
+		},
+		{
+			MethodName: "AllNfts",
+			Handler:    _NftQuery_AllNfts_Handler,
+		},
+		{
+			MethodName: "Nfts",
+			Handler:    _NftQuery_Nfts_Handler,
+		},
+		{
+			MethodName: "NftVolume",
+			Handler:    _NftQuery_NftVolume_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
