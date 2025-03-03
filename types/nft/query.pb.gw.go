@@ -562,7 +562,7 @@ func RegisterNftQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, s
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/AllNfts", runtime.WithHTTPPathPattern("/nft/all"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/AllNfts", runtime.WithHTTPPathPattern("/nfts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -587,7 +587,7 @@ func RegisterNftQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, s
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/Nfts", runtime.WithHTTPPathPattern("/nft/{collection}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/nft.NftQuery/Nfts", runtime.WithHTTPPathPattern("/nfts/{collection}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -786,7 +786,7 @@ func RegisterNftQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/AllNfts", runtime.WithHTTPPathPattern("/nft/all"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/AllNfts", runtime.WithHTTPPathPattern("/nfts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -808,7 +808,7 @@ func RegisterNftQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/Nfts", runtime.WithHTTPPathPattern("/nft/{collection}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/nft.NftQuery/Nfts", runtime.WithHTTPPathPattern("/nfts/{collection}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -860,9 +860,9 @@ var (
 
 	pattern_NftQuery_NftDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"nft", "collection", "id"}, ""))
 
-	pattern_NftQuery_AllNfts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"nft", "all"}, ""))
+	pattern_NftQuery_AllNfts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"nfts"}, ""))
 
-	pattern_NftQuery_Nfts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"nft", "collection"}, ""))
+	pattern_NftQuery_Nfts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"nfts", "collection"}, ""))
 
 	pattern_NftQuery_NftVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"nft", "volume", "collection", "id"}, ""))
 )

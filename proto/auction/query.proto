@@ -16,6 +16,6 @@ service AuctionQuery {
     option (google.api.http).get = "/marketplace/auctions";
   }
   rpc AuctionDetail(AuctionDetailRequest) returns (AuctionDetailResponse) {
-    option (google.api.http).get = "/marketplace/auctions/{auction_id}";
+    option (google.api.http).get = "/marketplace/auction/{auction_id}";
   }
 }

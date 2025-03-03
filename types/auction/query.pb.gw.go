@@ -201,7 +201,7 @@ func RegisterAuctionQueryHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/auction.AuctionQuery/AuctionDetail", runtime.WithHTTPPathPattern("/marketplace/auctions/{auction_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/auction.AuctionQuery/AuctionDetail", runtime.WithHTTPPathPattern("/marketplace/auction/{auction_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -309,7 +309,7 @@ func RegisterAuctionQueryHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/auction.AuctionQuery/AuctionDetail", runtime.WithHTTPPathPattern("/marketplace/auctions/{auction_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/auction.AuctionQuery/AuctionDetail", runtime.WithHTTPPathPattern("/marketplace/auction/{auction_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -333,7 +333,7 @@ var (
 
 	pattern_AuctionQuery_Auctions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"marketplace", "auctions"}, ""))
 
-	pattern_AuctionQuery_AuctionDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"marketplace", "auctions", "auction_id"}, ""))
+	pattern_AuctionQuery_AuctionDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"marketplace", "auction", "auction_id"}, ""))
 )
 
 var (

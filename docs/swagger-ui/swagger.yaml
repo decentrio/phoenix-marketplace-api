@@ -54,6 +54,78 @@ paths:
           type: string
       tags:
         - ActivityQuery
+  /marketplace/auction/{auctionId}:
+    get:
+      operationId: AuctionDetail
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  auctionId:
+                    type: string
+                  nftId:
+                    type: string
+                  collection:
+                    type: string
+                  currentBid:
+                    type: number
+                    format: float
+                  endTime:
+                    type: string
+                    format: uint64
+                  auctionToken:
+                    type: string
+                  amount:
+                    type: string
+                    format: uint64
+                  minimumPrice:
+                    type: number
+                    format: float
+                  buyNowPrice:
+                    type: number
+                    format: float
+                  status:
+                    type: string
+                  bids:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        bidder:
+                          type: string
+                        bidAmount:
+                          type: string
+                          format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: auctionId
+          in: path
+          required: true
+          type: string
+      tags:
+        - AuctionQuery
   /marketplace/auctions:
     get:
       operationId: Auctions
@@ -149,78 +221,6 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
-      tags:
-        - AuctionQuery
-  /marketplace/auctions/{auctionId}:
-    get:
-      operationId: AuctionDetail
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  auctionId:
-                    type: string
-                  nftId:
-                    type: string
-                  collection:
-                    type: string
-                  currentBid:
-                    type: number
-                    format: float
-                  endTime:
-                    type: string
-                    format: uint64
-                  auctionToken:
-                    type: string
-                  amount:
-                    type: string
-                    format: uint64
-                  minimumPrice:
-                    type: number
-                    format: float
-                  buyNowPrice:
-                    type: number
-                    format: float
-                  status:
-                    type: string
-                  bids:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        bidder:
-                          type: string
-                        bidAmount:
-                          type: string
-                          format: uint64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: auctionId
-          in: path
-          required: true
-          type: string
       tags:
         - AuctionQuery
   /collection/{address}:
@@ -553,46 +553,6 @@ paths:
                   additionalProperties: {}
       tags:
         - NftQuery
-  /nft/all:
-    get:
-      operationId: AllNfts
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    collection:
-                      type: string
-                    metadata:
-                      type: object
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - NftQuery
   /nft/volume/{collection}/{id}:
     get:
       operationId: NftVolume
@@ -697,51 +657,6 @@ paths:
           type: string
       tags:
         - NftQuery
-  /nft/{collection}:
-    get:
-      operationId: Nfts
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    collection:
-                      type: string
-                    metadata:
-                      type: object
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: collection
-          in: path
-          required: true
-          type: string
-      tags:
-        - NftQuery
   /nft/{collection}/{id}:
     get:
       operationId: NftDetail
@@ -784,6 +699,91 @@ paths:
           required: true
           type: string
         - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - NftQuery
+  /nfts:
+    get:
+      operationId: AllNfts
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    collection:
+                      type: string
+                    metadata:
+                      type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - NftQuery
+  /nfts/{collection}:
+    get:
+      operationId: Nfts
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    collection:
+                      type: string
+                    metadata:
+                      type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: collection
           in: path
           required: true
           type: string

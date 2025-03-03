@@ -34,11 +34,11 @@ service NftQuery {
   }
 
   rpc AllNfts(AllNftsRequest) returns (AllNftsResponse) {
-    option (google.api.http).get = "/nft/all";
+    option (google.api.http).get = "/nfts";
   }
 
   rpc Nfts(NftsRequest) returns (NftsResponse) {
-    option (google.api.http).get = "/nft/{collection}";
+    option (google.api.http).get = "/nfts/{collection}";
   }
 
   rpc NftVolume(NftVolumeRequest) returns (NftVolumeResponse) {
