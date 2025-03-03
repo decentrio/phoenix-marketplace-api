@@ -47,7 +47,7 @@ func (k Keeper) NftsAtAccount(ctx context.Context, request *types.NftsAtAccountR
 		metadata := &structpb.Struct{}
 		err := json.Unmarshal(nft.Metadata, metadata)
 		if err != nil {
-			return &types.NftsAtAccountResponse{}, err
+			fmt.Printf("failed to unmarshall metadata: %v", err)
 		}
 		response.Nfts = append(response.Nfts, &types.Nft{
 			Id:         nft.ID,
@@ -200,7 +200,7 @@ func (k Keeper) AllNfts(ctx context.Context, request *types.AllNftsRequest) (*ty
 		metadata := &structpb.Struct{}
 		err := json.Unmarshal(nft.Metadata, metadata)
 		if err != nil {
-			return &types.AllNftsResponse{}, err
+			fmt.Printf("failed to unmarshall metadata: %v", err)
 		}
 		response.Data = append(response.Data, &types.Nft{
 			Id:         nft.ID,
@@ -224,7 +224,7 @@ func (k Keeper) Nfts(ctx context.Context, request *types.NftsRequest) (*types.Nf
 		metadata := &structpb.Struct{}
 		err := json.Unmarshal(nft.Metadata, metadata)
 		if err != nil {
-			return &types.NftsResponse{}, err
+			fmt.Printf("failed to unmarshall metadata: %v", err)
 		}
 		response.Data = append(response.Data, &types.Nft{
 			Id:         nft.ID,
@@ -264,13 +264,13 @@ func (k Keeper) NftDetail(ctx context.Context, request *types.NftDetailRequest) 
 	metadata := &structpb.Struct{}
 	err = json.Unmarshal(nft.Metadata, metadata)
 	if err != nil {
-		return &types.NftDetailResponse{}, err
+		fmt.Printf("failed to unmarshall metadata: %v", err)
 	}
 	return &types.NftDetailResponse{
 		Data: &types.Nft{
-			Id: request.Id,
+			Id:         request.Id,
 			Collection: request.Collection,
-			Metadata: metadata,
+			Metadata:   metadata,
 		},
 	}, nil
 }

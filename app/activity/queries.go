@@ -3,6 +3,7 @@ package activity
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	app "phoenix-marketplace-api/app"
@@ -27,7 +28,7 @@ func (k Keeper) ActivityAtNft(ctx context.Context, request *types.ActivityAtNftR
 	for _, activity := range activities {
 		detail := &structpb.Struct{}
 		if err := json.Unmarshal([]byte(activity.Details), detail); err != nil {
-			return &types.ActivityAtNftResponse{}, err
+			fmt.Printf("failed to unmarshall detail: %v", err)
 		}
 		res = append(res, &types.ActivityInfo{
 			Type:      activity.Type,
